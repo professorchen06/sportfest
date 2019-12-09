@@ -7,10 +7,15 @@
 -- Server-Version: 10.3.15-MariaDB
 -- PHP-Version: 7.2.19
 
+-- Edit
+-- @editor Richard Schlossarek
+-- @date 09.12.2019
+--
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+00:00"; 							-- +01:00 cause germany and not England;
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -65,7 +70,7 @@ CREATE TABLE `klassenstufen` (
   `disziplin2` int(11) NOT NULL,
   `disziplin3` int(11) NOT NULL,
   `disziplin4` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;				-- Latin1 -> germanLatin
 
 -- --------------------------------------------------------
 
@@ -116,7 +121,7 @@ CREATE TABLE `werte` (
 -- Tabellenstruktur für Tabelle `wertung`
 --
 
-CREATE TABLE `wertung` (							-- Name?
+CREATE TABLE `wertung` (
   `id` int(11) NOT NULL,
   `geschlecht` varchar(1) NOT NULL, 
   `klassenstufen_id` int(11) NOT NULL,
@@ -133,83 +138,83 @@ CREATE TABLE `wertung` (							-- Name?
 -- Indizes für die Tabelle `disziplin`
 --
 ALTER TABLE `disziplin`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);							-- bezeichnung
 
 --
 -- Indizes für die Tabelle `klasse`
 --
 ALTER TABLE `klasse`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);							-- klassenstufe_id + klasse
 
 --
 -- Indizes für die Tabelle `klassenstufen`
 --
 ALTER TABLE `klassenstufen`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);							-- nummer
 
 --
 -- Indizes für die Tabelle `noten`
 --
 ALTER TABLE `noten`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);							-- schueler_id
 
 --
 -- Indizes für die Tabelle `schueler`
 --
 ALTER TABLE `schueler`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);							-- vname + nname + gebdatum
 
 --
 -- Indizes für die Tabelle `werte`
 --
 ALTER TABLE `werte`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);							-- schueler_id + disziplin_id
 
 --
 -- Indizes für die Tabelle `wertung`
 --
 ALTER TABLE `wertung`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);							-- ??
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
 --
--- AUTO_INCREMENT für Tabelle `disziplin`
+-- AUTO_INCREMENT für Tabelle `disziplin`			-- ignore if primekeys aren't  id
 --
 ALTER TABLE `disziplin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
 
 --
 -- AUTO_INCREMENT für Tabelle `klasse`
 --
 ALTER TABLE `klasse`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
 
 --
 -- AUTO_INCREMENT für Tabelle `klassenstufen`
 --
 ALTER TABLE `klassenstufen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
 
 --
 -- AUTO_INCREMENT für Tabelle `noten`
 --
 ALTER TABLE `noten`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
 
 --
 -- AUTO_INCREMENT für Tabelle `schueler`
 --
 ALTER TABLE `schueler`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
 
 --
 -- AUTO_INCREMENT für Tabelle `werte`
 --
 ALTER TABLE `werte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
 
 --
 -- AUTO_INCREMENT für Tabelle `wertung`
