@@ -36,14 +36,14 @@ USE `sportfest`;
 --
 
 CREATE TABLE `disziplin` (
-  `id` int(11) NOT NULL,
-  `bezeichnung` text NOT NULL,						-- Length?
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bezeichnung` varchar(255) NOT NULL,
   `wertung_id` int(11) DEFAULT NULL,
-  `rekord` text DEFAULT NULL,						-- Length?
-  `einheit` text NOT NULL,							-- Length? -> performance
+  `rekord` varchar(100) DEFAULT NULL,
+  `einheit` varchar(10) NOT NULL,
   `ordering` varchar(5) NOT NULL DEFAULT 'ASC',
   `picture` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;				-- Latin1 -> germanLatin
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -52,10 +52,10 @@ CREATE TABLE `disziplin` (
 --
 
 CREATE TABLE `klasse` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `klassenstufe_id` int(11) NOT NULL,
-  `klasse` text NOT NULL							-- Length?
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;				-- Latin1 -> germanLatin
+  `klasse` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -64,13 +64,13 @@ CREATE TABLE `klasse` (
 --
 
 CREATE TABLE `klassenstufen` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nummer` int(11) NOT NULL,
   `disziplin1` int(11) NOT NULL,
   `disziplin2` int(11) NOT NULL,
   `disziplin3` int(11) NOT NULL,
   `disziplin4` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;				-- Latin1 -> germanLatin
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -79,11 +79,11 @@ CREATE TABLE `klassenstufen` (
 --
 
 CREATE TABLE `noten` (
-  `id` int(11) NOT NULL,
-  `schueler_id` text NOT NULL,						-- Text? -> id(int(11))
-  `gesamtpunkte` text NOT NULL,						-- Text? -> Float(10)
-  `note` text NOT NULL								-- Length?
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;				-- Latin1 -> germanLatin
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `schueler_id` int(11) NOT NULL,
+  `gesamtpunkte` float(11,11) NOT NULL,
+  `note` varchar(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -92,15 +92,15 @@ CREATE TABLE `noten` (
 --
 
 CREATE TABLE `schueler` (
-  `id` int(11) NOT NULL,
-  `vname` text NOT NULL,							-- Length
-  `nname` text NOT NULL,							-- Length
-  `gebdatum` text NOT NULL,							-- Text? -> Date
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `vname` varchar(100) NOT NULL,
+  `nname` varchar(100) NOT NULL,
+  `gebdatum` date NOT NULL,
   `klasse_id` int(11) NOT NULL,
-  `geschlecht` text NOT NULL,						-- Text? -> char/varchar(1)
-  `anwesend` text NOT NULL,							-- Text? -> BOOLEAN/int(1)
-  `klassenplus` text NOT NULL						-- ???
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;				-- Latin1 -> germanLatin
+  `geschlecht` varchar(1) NOT NULL,
+  `anwesend` int(1) NOT NULL,
+  `klassenplus` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -109,11 +109,11 @@ CREATE TABLE `schueler` (
 --
 
 CREATE TABLE `werte` (
-  `id` int(11) NOT NULL,
-  `schueler_id` int(11) NOT NULL,					-- Verknüpfung?
-  `disziplin_id` int(11) NOT NULL,					-- Verknüpfung?
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `schueler_id` int(11) NOT NULL,
+  `disziplin_id` int(11) NOT NULL,
   `wert` float(7,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;				-- Latin1 -> germanLatin
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -122,17 +122,15 @@ CREATE TABLE `werte` (
 --
 
 CREATE TABLE `wertung` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `geschlecht` varchar(1) NOT NULL, 
   `klassenstufen_id` int(11) NOT NULL,
-  `valuetable` text NOT NULL						-- Table??
+  `valuetable` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indizes der exportierten Tabellen
 --
-
---------------------------------------------------- -- wirklich nötig?
 
 --
 -- Indizes für die Tabelle `disziplin`
@@ -180,48 +178,8 @@ ALTER TABLE `wertung`
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
---
--- AUTO_INCREMENT für Tabelle `disziplin`			-- ignore if primekeys aren't  id
---
-ALTER TABLE `disziplin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
+		
 
---
--- AUTO_INCREMENT für Tabelle `klasse`
---
-ALTER TABLE `klasse`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
-
---
--- AUTO_INCREMENT für Tabelle `klassenstufen`
---
-ALTER TABLE `klassenstufen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
-
---
--- AUTO_INCREMENT für Tabelle `noten`
---
-ALTER TABLE `noten`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
-
---
--- AUTO_INCREMENT für Tabelle `schueler`
---
-ALTER TABLE `schueler`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
-
---
--- AUTO_INCREMENT für Tabelle `werte`
---
-ALTER TABLE `werte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;		
-
---
--- AUTO_INCREMENT für Tabelle `wertung`
---
-ALTER TABLE `wertung`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
