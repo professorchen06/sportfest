@@ -8,9 +8,12 @@
 		$disz4  = $_POST["disz4"];
 
 		if($nummer != "") {
-			mysqli_query($GLOBALS["dbConnection"], "INSERT INTO klassenstufen (nummer, disziplin1, disziplin2, disziplin3, disziplin4) VALUES('$nummer','$disz1','$disz2','$disz3','$disz4')");
+			if(mysqli_query($GLOBALS["dbConnection"], "INSERT INTO klassenstufen (nummer, disziplin1, disziplin2, disziplin3, disziplin4) VALUES('$nummer','$disz1','$disz2','$disz3','$disz4')"))
+				echo "Klassenstufe erfolgreich hinzugefügt";
+			else
+				echo "Es ist ein Fehler aufgetreten, falls dies noch einmal auftritt, dann kontaktieren sie bitte ihren Administrator."
 		} else {
-			echo "nummer muss Ausgef&uuml;llt sein!";
+			echo "Das Feld 'Nummer' muss Ausgef&uuml;llt sein!";
 		}
 	}
 
@@ -23,7 +26,8 @@
 		$disz4  = $_POST["disz4"];
 
 		if($nummer != "") {
-			mysqli_query($GLOBALS["dbConnection"], "UPDATE klassenstufen SET nummer='$nummer', disziplin1='$disz1', disziplin2='$disz2', disziplin3='$disz3', disziplin4='$disz4' WHERE id = '$id'");
+			if(mysqli_query($GLOBALS["dbConnection"], "UPDATE klassenstufen SET nummer='$nummer', disziplin1='$disz1', disziplin2='$disz2', disziplin3='$disz3', disziplin4='$disz4' WHERE id = '$id'"))
+				echo "&Auml;nderungen erfolgreich ausgeführt";
 		} else {
 			echo "nummernung muss Ausgef&uuml;llt sein!";
 		}
@@ -38,7 +42,10 @@
 			$count++;
 		}
 		if($count == 0) {
-			mysqli_query($GLOBALS["dbConnection"], "DELETE FROM klassenstufen WHERE id = '$id'");
+			if(mysqli_query($GLOBALS["dbConnection"], "DELETE FROM klassenstufen WHERE id = '$id'"))
+				echo "L&ouml;schen erfolgreich ausgeführt";
+			else
+				echo "Es ist ein Fehler aufgetreten, falls dies noch einmal auftritt, dann kontaktieren sie bitte ihren Administrator.";
 		} else {
 			echo "Sie m&uuml;ssen vorher diese Klassenstufe aus allen Klassen entfernen, da es sonst zu fehlern kommen kann!";
 		}
@@ -49,7 +56,7 @@
 	echo "</p>";
 
 	if(isset($_GET["sub"]) AND $_GET["sub"] == "new") {											//Anlegen der Klassenstufe
-		echo "create klassenstufe";
+		echo "Klassenstufe erstellen";
 
 		echo "<form action='index.php?con=ks&sub=newq' method='POST'>";
 			echo "<table>";
