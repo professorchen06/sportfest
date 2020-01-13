@@ -5,7 +5,10 @@
 		$ordering	= $_POST["ordering"];
 		$picture	= $_POST["picture"];
 		if($bezeich != "") {
-			mysqli_query($GLOBALS["dbConnection"], "INSERT INTO disziplin (bezeichnung, einheit, ordering, picture) VALUES('$bezeich', '$einheit', '$ordering', '$picture')");
+			if(mysqli_query($GLOBALS["dbConnection"], "INSERT INTO disziplin (bezeichnung, einheit, ordering, picture) VALUES('$bezeich', '$einheit', '$ordering', '$picture')"))
+				echo "Disziplin erfolgreich erstellt";
+			else
+				echo "Es ist ein Fehler aufgetreten, falls dies noch einmal auftritt, dann kontaktieren sie bitte ihren Administrator.";
 		} else {
 			echo "Bezeichnung muss Ausgefüllt sein!";
 		}
@@ -37,7 +40,10 @@
 		$check_query = mysqli_query($GLOBALS["dbConnection"], "SELECT id FROM klassenstufen WHERE disziplin1=$id OR disziplin2=$id OR disziplin3=$id");
 		$count = mysqli_num_rows($check_query);
 		if($count == 0) {
-			mysqli_query($GLOBALS["dbConnection"], "DELETE FROM disziplin WHERE id = '$id'");
+			if(mysqli_query($GLOBALS["dbConnection"], "DELETE FROM disziplin WHERE id = '$id'"))
+				echo "Vorgang erfolgreich ausgeführt!";
+			else
+				echo "Es ist ein Fehler aufgetreten, falls dies noch einmal auftritt, dann kontaktieren sie bitte ihren Administrator.";
 		} else {
 			echo "Sie m&uuml;ssen vorher diese Disziplin aus allen Klassenstufen entfernen, da es sonst zu fehlern kommen kann!";
 		}
