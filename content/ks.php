@@ -56,6 +56,10 @@
 	echo "</p>";
 
 	if(isset($_GET["sub"]) AND $_GET["sub"] == "new") {											//Anlegen der Klassenstufe
+		if(!isset($_GET['a_disziplin']))
+			$a_disziplin = $_GET['a_disziplin'];
+		else
+			$a_disziplin = 1;
 		echo "Klassenstufe erstellen";
 
 		echo "<form action='index.php?con=ks&sub=newq' method='POST'>";
@@ -65,6 +69,7 @@
 					echo "<td colspan='4'><input type='text' name='nummer' required/></td>";
 				echo "</tr>";
 				echo "<tr>";
+					/* --deprecated
 					for($for = 1; $for <= 4; $for++){
 						echo "<td>";
 							echo "<select name='disz",$for,"'>";
@@ -77,7 +82,25 @@
 								}
 							echo "</select>";
 						echo "</td>";
+					}*/
+					for($i=0;$i<$a_disziplin;$i++){
+						echo "<td>";
+							echo "<select name=\"disz\"" . $i . ">";
+								echo "<option/>";
+								$disz_query = mysqli_query($GLOBALS["dbConnection"], "SELECT id,bezeichnung FROM disziplin");
+								while($row = mysqli_fetch_assoc($disz_query)){
+									$disz_id	= $row["id"];
+									$bezeich	= $row["bezeichnung"];
+									echo "<option value='$disz_id'>$bezeich</option>";
+								}
+							echo "</select>";
+						echo "</td>
+						<td>
+							<input type=\"number\" name=\"diszgroup" . $i . "\" required>
+						</td>";
 					}
+					//TODO: add new line button
+					echo "<tr><td><a></a></td></tr>";
 					echo "<td><input type='submit' value='create'></td>";
 			echo "</table>";
 		echo "</form>";
@@ -89,10 +112,11 @@
 		$ks_query 	= mysqli_query($GLOBALS["dbConnection"], "SELECT * FROM klassenstufen WHERE id = '$id'");
 		while($row 	= mysqli_fetch_assoc($ks_query)) {												//Mit aktuellen werten ausgeben
 			$nummer	= $row["nummer"];
+			/* --deprecated
 			$disziplin1	= $row["disziplin1"];
 			$disziplin2	= $row["disziplin2"];
 			$disziplin3	= $row["disziplin3"];
-			$disziplin4	= $row["disziplin4"];
+			$disziplin4	= $row["disziplin4"];*/
 		}
 		echo "<form action='index.php?con=ks&sub=changeq' method='POST'>";
 			echo "<table>";
@@ -135,13 +159,15 @@
 		echo "<tr>";
 			$id			= $row["id"];
 			$nummer		= $row["nummer"];
+			/* --deprecated
 			$disziplin1	= $row["disziplin1"];
 			$disziplin2	= $row["disziplin2"];
 			$disziplin3	= $row["disziplin3"];
-			$disziplin4	= $row["disziplin4"];
+			$disziplin4	= $row["disziplin4"];*/
 
 			echo "<td>",$nummer,"</td>";
 
+			/* --deprecated
 			for($for = 1;$for <= 4;$for++) {
 				$disz_ueid 	= "disziplin$for";				//�bergangsvariable
 				$disz_id	= $$disz_ueid;
@@ -152,7 +178,7 @@
 					echo $row["bezeichnung"];
 				}
 				echo "</td>";
-			}
+			}*/
 
 			echo "<td><a href='index.php?con=ks&sub=change&id=",$id,"'>Bearbeien</a></td>";
 			echo "<td><a href='index.php?con=ks&sub=deleteq&id=",$id,"'>Löschen</a></td>";
