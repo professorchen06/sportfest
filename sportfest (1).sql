@@ -65,11 +65,7 @@ CREATE TABLE `klasse` (
 
 CREATE TABLE `klassenstufen` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nummer` int(11) NOT NULL,
-  `disziplin1` int(11) NOT NULL,
-  `disziplin2` int(11) NOT NULL,
-  `disziplin3` int(11) NOT NULL,
-  `disziplin4` int(11) NOT NULL
+  `nummer` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -83,6 +79,19 @@ CREATE TABLE `noten` (
   `schueler_id` int(11) NOT NULL,
   `gesamtpunkte` float(11,11) NOT NULL,
   `note` varchar(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `Disziplin-Klasse`
+--
+
+CREATE TABLE `Disziplin-Klasse` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `disziplin_id` int(11) NOT NULL,
+  `klasse_id` int(11) NOT NULL,
+  `wahl_gruppe` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
