@@ -2,13 +2,21 @@
 	if(isset($_GET["sub"]) AND $_GET["sub"] == "newq") {										//Klassenstufe in DB eintragen
 
 		$nummer	= $_POST["nummer"];
-		$disz1	= $_POST["disz1"];
-		$disz2	= $_POST["disz2"];
-		$disz3	= $_POST["disz3"];
-		$disz4  = $_POST["disz4"];
+		$end 	= false;
+		$disziplinen = [];
+		$i=1;
+		while(!$end){
+			if(isset($_GET['disziplin' + $i]) && isset($_GET['disziplingruppe' + $i])){
+				$disziplinen[] = ["name:" => $_GET['disziplin' + i],
+						  "gruppe" => $_GET['disziplingruppe' + $i]];
+			}else{
+				$end = true;
+			}
+		}
 
 		if($nummer != "") {
-			if(mysqli_query($GLOBALS["dbConnection"], "INSERT INTO klassenstufen (nummer, disziplin1, disziplin2, disziplin3, disziplin4) VALUES('$nummer','$disz1','$disz2','$disz3','$disz4')"))
+			if(mysqli_query($GLOBALS["dbConnection"], "INSERT INTO klassenstufen (nummer) VALUES('$nummer')")&&
+			  $id = mysqli_query($GLOBALS["dbConnection"], "SELECT id from klassenstufen WHERE nummer = " . $nummer . ";")&&insertklassedisziplin($id,$disziplinen))
 				echo "Klassenstufe erfolgreich hinzugefügt";
 			else
 				echo "Es ist ein Fehler aufgetreten, falls dies noch einmal auftritt, dann kontaktieren sie bitte ihren Administrator."
@@ -187,4 +195,10 @@
 		echo "</tr>";
 	}
 	echo "</table>";
+//TODO
+function insertklassedisziplin($id, $disziplinen){
+	foreach($disziplinen as $disziplin){
+		mysqli_query($GLOBALS["dbConnection"], "INSERT INTO disziplin-klasse (klassenstufen_id,disziplin_gruppe, disziplin_id) VALUES(" . $disziplinen[""] . ");");
+	}
+}
 ?>
