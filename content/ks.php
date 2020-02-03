@@ -7,7 +7,7 @@
 		$i=1;
 		while(!$end){
 			if(isset($_GET['disziplin' + $i]) && isset($_GET['disziplingruppe' + $i])){
-				$disziplinen[] = ["name:" => $_GET['disziplin' + i],
+				$disziplinen[] = ["name" => $_GET['disziplin' + i],
 						  "gruppe" => $_GET['disziplingruppe' + $i]];
 			}else{
 				$end = true;
@@ -195,10 +195,13 @@
 		echo "</tr>";
 	}
 	echo "</table>";
-//TODO
+
 function insertklassedisziplin($id, $disziplinen){
+	$query = "INSERT into Disziplin-Klasse (klasse_id, disziplin_id, wahl_gruppe) VALUES (";
 	foreach($disziplinen as $disziplin){
-		mysqli_query($GLOBALS["dbConnection"], "INSERT INTO disziplin-klasse (klassenstufen_id,disziplin_gruppe, disziplin_id) VALUES(" . $disziplinen[""] . ");");
+		$query .= "(" . $id . "," . $disziplin['name'] . "," . $disziplin['gruppe'] . ")";
 	}
+	$query.= ");";
+	mysqli_query($GLOBALS["dbConnection"], $query);
 }
 ?>
