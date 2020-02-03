@@ -161,6 +161,18 @@
 		echo "</form>";
 	}
 
+	if(isset($_GET["sub"]) AND $_GET["sub"] == "change") {
+		if(!isset($_GET['id'])){
+			echo "Ein Fehler ist aufgetreten!";
+		}else{
+			$res1 = mysql_fetch_row( mysqli_query($GLOBALS['dbConnection'], "SELECT * FROM klassenstufe where id=" . $_GET['id'] . ";"));
+			echo "<ul>";
+			
+			//TODO	echo "<li>" . $res1['id'] . "</li>";
+			echo "</ul>";
+		}
+	}
+
 	$ks_query = mysqli_query($GLOBALS["dbConnection"], "SELECT * FROM klassenstufen ORDER BY nummer");										//echo ALL disziplins
 	echo "<table border='1'>";
 	while($row = mysqli_fetch_assoc($ks_query)) {
@@ -173,7 +185,7 @@
 			$disziplin3	= $row["disziplin3"];
 			$disziplin4	= $row["disziplin4"];*/
 
-			echo "<td>",$nummer,"</td>";
+			echo "<td><a href=\"index.php?con=ks&sub=showone&?id=" . $id . "\"",$nummer,"</td>";
 
 			/* --deprecated
 			for($for = 1;$for <= 4;$for++) {
