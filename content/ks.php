@@ -107,8 +107,7 @@
 							<input type=\"number\" name=\"diszgroup" . $i . "\" required>
 						</td>";
 					}
-					//TODO: add new line button
-					echo "<tr><td><a></a></td></tr>";
+					echo "<tr><td><a href=\"?con=ks&sub=new&a_disziplin=" . ($a_disziplin + 1) . "\">Neue Zeile</a></td></tr>";
 					echo "<td><input type='submit' value='create'></td>";
 			echo "</table>";
 		echo "</form>";
@@ -171,6 +170,19 @@
 			//TODO	echo "<li>" . $res1['id'] . "</li>";
 			echo "</ul>";
 		}
+	}
+
+	if(isset($_GET['sub']) && $_GET['sub']="showone"){
+		if(!isset($_GET['ks']))
+			exit("<b><pre>Error: No class specified! content/ks.php:177</pre></b>");
+		$res = mysqli_query($GLOBALS["dbConnection"], "SELECT * FROM Disziplin-Klasse dk, klassenstufen ks, disziplinen d WHERE ks.nummer='" . $_GET['ks'] . "' AND ks.id=dk.klasse_id AND d.id=dk.disziplin_id");
+		echo "<h1>" . $_GET['ks'] . "</h1>";
+		echo "<table>";
+		while($row = mysqli_fetch_assoc($res)){
+			echo "<tr><td>" . $row['bezeichnung'] . "</td></tr>"; //TODO: Gruppe
+		}
+		echo "</table>";
+		
 	}
 
 	$ks_query = mysqli_query($GLOBALS["dbConnection"], "SELECT * FROM klassenstufen ORDER BY nummer");										//echo ALL disziplins
