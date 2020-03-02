@@ -1,4 +1,5 @@
 <?php
+	//query for new ks
 	if(isset($_GET["sub"]) AND $_GET["sub"] == "newq") {										//Klassenstufe in DB eintragen
 
 		$nummer	= $_POST["nummer"];
@@ -25,6 +26,7 @@
 		}
 	}
 
+	//query for changing elements
 	if(isset($_GET["sub"]) AND $_GET["sub"] == "changeq") {										//geänderte Klassenstufe in DB eintragen
 		$id		= $_POST["id"];
 		$nummer	= $_POST["nummer"];
@@ -42,6 +44,7 @@
 
 	}
 
+	//query for deleting elements
 	if(isset($_GET["sub"]) AND $_GET["sub"] == "deleteq") {										//Klassenstufe löschen
 		$id			= $_GET["id"];
 		$check_query = mysqli_query($GLOBALS["dbConnection"], "SELECT id FROM klasse WHERE klassenstufe_id = '$id'");
@@ -63,8 +66,9 @@
 		echo "<a href='index.php?con=ks&sub=new'>Neue Klassenstufe Anlegen</a>";
 	echo "</p>";
 
+	//gennerate HTML Form for a new Element
 	if(isset($_GET["sub"]) AND $_GET["sub"] == "new") {											//Anlegen der Klassenstufe
-		if(!isset($_GET['a_disziplin']))
+		if(isset($_GET['a_disziplin']))
 			$a_disziplin = $_GET['a_disziplin'];
 		else
 			$a_disziplin = 1;
@@ -113,7 +117,12 @@
 		echo "</form>";
 	}
 
+	//gennerate HTML Form for changing Elements
 	if(isset($_GET["sub"]) AND $_GET["sub"] == "change") {											//Change ausf�llen
+		if(isset($_GET['a_disziplin']))
+			$a_disziplin = $_GET['a_disziplin'];
+		else
+			$a_disziplin = 1;
 		echo "change klassenstufe";
 		$id = $_GET["id"];
 		$ks_query 	= mysqli_query($GLOBALS["dbConnection"], "SELECT * FROM klassenstufen WHERE id = '$id'");
@@ -131,7 +140,7 @@
 					echo "<td>Nummer: </td>";
 					echo "<td><input type='text' name='nummer' value='",$nummer,"'required/></td>";
 				echo "</tr><tr>";
-
+				/*--deprecrated
 				for($for = 1; $for <= 4; $for++){
 						echo "<td>";
 							echo "<select name='disz",$for,"'>";
@@ -150,6 +159,48 @@
 
 							echo "</select>";
 						echo "</td>";
+					}*/
+				if(!isset($_GET['ks']))
+					exit("<b><pre>Error: No class specified! content/ks.php:177</pre></b>");
+				$res = mysqli_query($GLOBALS["dbConnection"], "SELECT dk.gruppe, dk.id as dkid, ks.nummer, ks.id as ksid, d.id as did, d.bezeichnung FROM Disziplin-Klasse dk, klassenstufen ks, disziplin d WHERE ks.nummer='" . $_GET['ks'] . "' AND ks.id=dk.klasse_id AND d.id=dk.disziplin_id");
+				$all_disziplins=mysqli_query($GLOBALS['connection'],"SELECT * form disziplin");
+				echo "<h1>" . $_GET['ks'] . "</h1>";
+				echo "<table>";
+				$i=0;
+				while($row = mysqli_fetch_assoc($res)){
+					echo "<tr><td>";
+					echo "<select name=\"dkid" . $row['dkid'] . "\">";
+							echo "<option/>";
+							$disz_query = $all_disziplins;
+							while($drow = mysqli_fetch_assoc($disz_query)){
+								$disz_id	= $drow["id"];
+								$bezeich	= $drow["bezeichnung"];
+								if($row['did']==$drow['id'])
+									$sel="selected";
+								else
+									$sel="";
+								echo "<option value='$disz_id' ' . $sel . '>$bezeich</option>";
+							}
+					echo "</select>";
+					echo "</td><td><input type=\"number\" name=\"diszg" . $row['dkid'] .  "\"" . $row['gruppe'] . "</td></tr>";
+				}
+
+				echo "</table>";
+					for($i=0;$i<$a_disziplin;$i++){
+						echo "<td>";
+							echo "<select name=\"disznew\"" . $i . ">";
+								echo "<option/>";
+								$disz_query = mysqli_query($GLOBALS["dbConnection"], "SELECT id,bezeichnung FROM disziplin");
+								while($row = mysqli_fetch_assoc($disz_query)){
+									$disz_id	= $row["id"];
+									$bezeich	= $row["bezeichnung"];
+									echo "<option value='$disz_id'>$bezeich</option>";
+								}
+							echo "</select>";
+						echo "</td>
+						<td>
+							<input type=\"number\" name=\"diszgroupnew" . $i . "\" required>
+						</td>";
 					}
 
 					echo "<td colspan='2'>";
@@ -160,18 +211,7 @@
 		echo "</form>";
 	}
 
-	if(isset($_GET["sub"]) AND $_GET["sub"] == "change") {
-		if(!isset($_GET['id'])){
-			echo "Ein Fehler ist aufgetreten!";
-		}else{
-			$res1 = mysql_fetch_row( mysqli_query($GLOBALS['dbConnection'], "SELECT * FROM klassenstufe where id=" . $_GET['id'] . ";"));
-			echo "<ul>";
-			
-			//TODO	echo "<li>" . $res1['id'] . "</li>";
-			echo "</ul>";
-		}
-	}
-
+//show detailed information for one element
 	if(isset($_GET['sub']) && $_GET['sub']="showone"){
 		if(!isset($_GET['ks']))
 			exit("<b><pre>Error: No class specified! content/ks.php:177</pre></b>");
@@ -179,13 +219,14 @@
 		echo "<h1>" . $_GET['ks'] . "</h1>";
 		echo "<table>";
 		while($row = mysqli_fetch_assoc($res)){
-			echo "<tr><td>" . $row['bezeichnung'] . "</td></tr>"; //TODO: Gruppe
+			echo "<tr><td>" . $row['bezeichnung'] . "</td><td>" . $row['gruppe'] . "</td></tr>";
 		}
+		
 		echo "</table>";
 		
 	}
 
-	$ks_query = mysqli_query($GLOBALS["dbConnection"], "SELECT * FROM klassenstufen ORDER BY nummer");										//echo ALL disziplins
+	$ks_query = mysqli_query($GLOBALS["dbConnection"], "SELECT * FROM klassenstufen ORDER BY nummer");							//echo ALL disziplins
 	echo "<table border='1'>";
 	while($row = mysqli_fetch_assoc($ks_query)) {
 		echo "<tr>";
@@ -220,6 +261,7 @@
 	}
 	echo "</table>";
 
+//function for inserting one ks into the db
 function insertklassedisziplin($id, $disziplinen){
 	$query = "INSERT into Disziplin-Klasse (klasse_id, disziplin_id, wahl_gruppe) VALUES (";
 	foreach($disziplinen as $disziplin){
